@@ -1,6 +1,6 @@
 /**
  * Africa Travel Connectivity — the MCP server's metadata and tools, built over
- * the live Safari eSIM catalog. index.ts builds one instance per request
+ * the live SafarieSIM catalog. index.ts builds one instance per request
  * (stateless) and handles transport, auth and rate limits.
  */
 import type { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
@@ -33,7 +33,7 @@ export interface CallerContext {
   withRef: (url: string) => string;
 }
 
-const INSTRUCTIONS = `Africa Travel Connectivity answers travel eSIM questions with live plans and prices from Safari eSIM (safariesim.com). It covers African destinations first and also works for the other countries Safari eSIM sells. All tools are read-only.
+const INSTRUCTIONS = `Africa Travel Connectivity answers travel eSIM questions with live plans and prices from SafarieSIM (safariesim.com). It covers African destinations first and also works for the other countries SafarieSIM sells. All tools are read-only.
 
 Which tool to use:
 - search_esim_plans: plans that work in every country of a trip, filtered by trip length, data, budget and currency.
@@ -44,7 +44,7 @@ Which tool to use:
 
 Guidance:
 - Countries can be ISO codes or English names. Ask for the trip length when it matters.
-- Prices are final per-traveller prices that match Safari eSIM checkout. Always state the currency.
+- Prices are final per-traveller prices that match SafarieSIM checkout. Always state the currency.
 - To buy, give the user the plan's checkout_url. This server cannot purchase anything.
 - This server knows operators per country, not signal at specific parks or lodges. Say so rather than guessing coverage.`;
 
@@ -142,6 +142,8 @@ export function buildServer(supabase: SupabaseClient, caller: CallerContext) {
     {
       name: "africa-travel-connectivity",
       title: "Africa Travel Connectivity",
+      description:
+        "Find and compare travel eSIM plans, prices, networks and validity across Africa, with live data from SafarieSIM.",
       version: SERVER_VERSION,
       websiteUrl: SITE,
       icons: [{ src: ICON_URL, mimeType: "image/png", sizes: ["512x512"] }],
@@ -185,7 +187,7 @@ export function buildServer(supabase: SupabaseClient, caller: CallerContext) {
   const uncoveredNote = (plans: Plan[], isos: string[]) => {
     const missing = isos.filter((c) => !plans.some((p) => p.countries.includes(c)));
     return missing.length
-      ? `No Safari eSIM plan currently covers ${missing.map((c) => `${countryName(c)} (${c})`).join(", ")}.`
+      ? `No SafarieSIM plan currently covers ${missing.map((c) => `${countryName(c)} (${c})`).join(", ")}.`
       : null;
   };
 
@@ -207,7 +209,7 @@ export function buildServer(supabase: SupabaseClient, caller: CallerContext) {
         "\"best eSIM for a 10-day Kenya safari\" or \"one eSIM for Kenya, Tanzania and Uganda under $40\". " +
         "Each plan includes its data allowance (or unlimited with its daily full-speed cap), validity, price in the " +
         "requested currency, the operators it uses in those countries, and a checkout_url. Prices are live and match " +
-        "Safari eSIM checkout. If no single plan covers every country, use compare_country_plans.",
+        "SafarieSIM checkout. If no single plan covers every country, use compare_country_plans.",
       inputSchema: SearchInput,
       outputSchema: S.SearchOutput,
       annotations: { title: "Search eSIM plans", ...READ_ONLY },
@@ -313,7 +315,7 @@ export function buildServer(supabase: SupabaseClient, caller: CallerContext) {
     {
       title: "Get mobile networks for a country",
       description:
-        "List the mobile operators and network types (5G, 4G, 3G) that Safari eSIM plans use in a country, and which " +
+        "List the mobile operators and network types (5G, 4G, 3G) that SafarieSIM plans use in a country, and which " +
         "plans use each operator. Use it for \"which network does the Tanzania eSIM use?\" or \"is there 5G in " +
         "Kenya?\". It does not know signal strength at specific parks, lodges or roads.",
       inputSchema: NetworksInput,
@@ -352,10 +354,10 @@ export function buildServer(supabase: SupabaseClient, caller: CallerContext) {
         .map((e) => ({ operator: e.operator, network_types: e.network_types, offered_on: [...e.offered_on.values()] }));
 
       const lead = perDestination.size === 0
-        ? `No Safari eSIM plan currently covers ${countryName(iso)}.`
+        ? `No SafarieSIM plan currently covers ${countryName(iso)}.`
         : networks.length === 0
         ? `Operator details are not recorded for ${countryName(iso)} yet.`
-        : `Operators come from the Safari eSIM catalog.`;
+        : `Operators come from the SafarieSIM catalog.`;
       return ok({
         country: countryRef(iso),
         network_types: sortTypes(networks.flatMap((n) => n.network_types)),
@@ -440,7 +442,7 @@ export function buildServer(supabase: SupabaseClient, caller: CallerContext) {
     {
       title: "List destinations",
       description:
-        "List the destinations Safari eSIM covers — African countries and multi-country plans by default — with " +
+        "List the destinations SafarieSIM covers — African countries and multi-country plans by default — with " +
         "their type (single or multi-country), the plan types offered and the product page. Use it for \"which " +
         "African countries do you cover?\" or to find which plans include a country (query: \"TZ\").",
       inputSchema: DestinationsInput,

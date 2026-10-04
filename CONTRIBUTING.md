@@ -4,7 +4,7 @@ Thanks for helping make travel connectivity answers better. Bug reports, tool id
 
 ## How this repository works
 
-This repository mirrors the production source of the MCP server. Production is deployed from Safari eSIM's main codebase, so when a pull request here is accepted, a maintainer applies it there, deploys it, and re-exports this repository. Your change still lands, with credit, but it may arrive in a maintainer's commit.
+This repository mirrors the production source of the MCP server. Production is deployed from SafarieSIM's main codebase, so when a pull request here is accepted, a maintainer applies it there, deploys it, and re-exports this repository. Your change still lands, with credit, but it may arrive in a maintainer's commit.
 
 ## Ground rules for tools
 

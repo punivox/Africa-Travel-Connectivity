@@ -21,7 +21,7 @@ export const Plan = z.object({
   destination: z.object({
     name: z.string(),
     slug: z.string(),
-    url: z.string().describe("Safari eSIM product page"),
+    url: z.string().describe("SafarieSIM product page"),
   }),
   coverage: z.object({
     type: z.enum(["single_country", "multi_country"]),
@@ -43,7 +43,7 @@ export const Plan = z.object({
   networks: z.array(Network).describe("Operators used in the countries asked about"),
   hotspot_allowed: z.boolean(),
   top_up_available: z.boolean(),
-  checkout_url: z.string().describe("Opens Safari eSIM checkout with this plan selected"),
+  checkout_url: z.string().describe("Opens SafarieSIM checkout with this plan selected"),
 });
 
 export const SearchOutput = z.object({

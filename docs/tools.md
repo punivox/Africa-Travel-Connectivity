@@ -10,7 +10,7 @@ Generated from the server's own `tools/list` and from calls against the syntheti
 
 ## `search_esim_plans`
 
-**Search eSIM plans.** Find travel eSIM plans that work in every country of a trip, cheapest first. Use it for questions like "best eSIM for a 10-day Kenya safari" or "one eSIM for Kenya, Tanzania and Uganda under $40". Each plan includes its data allowance (or unlimited with its daily full-speed cap), validity, price in the requested currency, the operators it uses in those countries, and a checkout_url. Prices are live and match Safari eSIM checkout. If no single plan covers every country, use compare_country_plans.
+**Search eSIM plans.** Find travel eSIM plans that work in every country of a trip, cheapest first. Use it for questions like "best eSIM for a 10-day Kenya safari" or "one eSIM for Kenya, Tanzania and Uganda under $40". Each plan includes its data allowance (or unlimited with its daily full-speed cap), validity, price in the requested currency, the operators it uses in those countries, and a checkout_url. Prices are live and match SafarieSIM checkout. If no single plan covers every country, use compare_country_plans.
 
 ### Input
 
@@ -377,7 +377,7 @@ Top-level fields: `days`, `days_defaulted`, `currency`, `countries`, `single_esi
 
 ## `get_country_networks`
 
-**Get mobile networks for a country.** List the mobile operators and network types (5G, 4G, 3G) that Safari eSIM plans use in a country, and which plans use each operator. Use it for "which network does the Tanzania eSIM use?" or "is there 5G in Kenya?". It does not know signal strength at specific parks, lodges or roads.
+**Get mobile networks for a country.** List the mobile operators and network types (5G, 4G, 3G) that SafarieSIM plans use in a country, and which plans use each operator. Use it for "which network does the Tanzania eSIM use?" or "is there 5G in Kenya?". It does not know signal strength at specific parks, lodges or roads.
 
 ### Input
 
@@ -436,7 +436,7 @@ Top-level fields: `country`, `network_types`, `networks`, `note`. The full JSON 
       ]
     }
   ],
-  "note": "Operators come from the Safari eSIM catalog. Signal in remote areas such as national parks depends on each operator's local coverage, which this server does not track."
+  "note": "Operators come from the SafarieSIM catalog. Signal in remote areas such as national parks depends on each operator's local coverage, which this server does not track."
 }
 ```
 
@@ -551,7 +551,7 @@ Top-level fields: `days`, `devices`, `profile`, `daily_mb`, `total_gb`, `breakdo
 
 ## `list_destinations`
 
-**List destinations.** List the destinations Safari eSIM covers — African countries and multi-country plans by default — with their type (single or multi-country), the plan types offered and the product page. Use it for "which African countries do you cover?" or to find which plans include a country (query: "TZ").
+**List destinations.** List the destinations SafarieSIM covers — African countries and multi-country plans by default — with their type (single or multi-country), the plan types offered and the product page. Use it for "which African countries do you cover?" or to find which plans include a country (query: "TZ").
 
 ### Input
 

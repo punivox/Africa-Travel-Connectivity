@@ -1,6 +1,6 @@
 # Africa Travel Connectivity
 
-An MCP server that lets AI assistants find and compare travel eSIM plans for Africa: live prices, mobile networks, validity and trip data estimates, from the [Safari eSIM](https://safariesim.com) catalog.
+An MCP server that lets AI assistants find and compare travel eSIM plans for Africa: live prices, mobile networks, validity and trip data estimates, from the [SafarieSIM](https://safariesim.com) catalog.
 
 ```
 https://api.safariesim.com/functions/v1/mcp
@@ -10,7 +10,7 @@ Public and read-only. No API key. Streamable HTTP, serving MCP `2026-07-28` with
 
 ## Why it exists
 
-Questions like "which eSIM works in Kenya and Tanzania?" or "how much will 12 days of data cost?" have answers that change week to week. Prices, durations and networks live in a catalog, not in a model's training data. This server lets an assistant look them up instead of guessing. It returns the same prices Safari eSIM charges at checkout, the operators each plan uses, and a link to buy.
+Questions like "which eSIM works in Kenya and Tanzania?" or "how much will 12 days of data cost?" have answers that change week to week. Prices, durations and networks live in a catalog, not in a model's training data. This server lets an assistant look them up instead of guessing. It returns the same prices SafarieSIM charges at checkout, the operators each plan uses, and a link to buy.
 
 ## Connect
 
@@ -64,7 +64,7 @@ Any other client that supports remote MCP servers over Streamable HTTP works the
 | `calculate_safari_data` | How much data a trip needs, from its length and activities, optionally matched to plans that fit. |
 | `list_destinations` | Covered countries and multi-country plans, Africa first. |
 
-Countries can be ISO codes (`KE`) or English names (`Kenya`, `Zanzibar`). Prices come in any currency Safari eSIM supports (USD by default). Every tool is read-only and returns structured content that matches a published output schema.
+Countries can be ISO codes (`KE`) or English names (`Kenya`, `Zanzibar`). Prices come in any currency SafarieSIM supports (USD by default). Every tool is read-only and returns structured content that matches a published output schema.
 
 The full reference, with input and output schemas, examples and edge cases, is in [docs/tools.md](docs/tools.md).
 
@@ -106,9 +106,9 @@ The full reference, with input and output schemas, examples and edge cases, is i
 
 ## Destinations
 
-The server covers every destination Safari eSIM sells, with Africa first. `list_destinations` returns the live list. Some common safari trips:
+The server covers every destination SafarieSIM sells, with Africa first. `list_destinations` returns the live list. Some common safari trips:
 
-| Trip | Safari eSIM page |
+| Trip | SafarieSIM page |
 |---|---|
 | Kenya | [Kenya eSIM](https://safariesim.com/kenya-esim) |
 | Tanzania, including Zanzibar | [Tanzania eSIM](https://safariesim.com/tanzania-esim) |
@@ -134,11 +134,11 @@ The server covers every destination Safari eSIM sells, with Africa first. `list_
 
 - **One server per request.** Edge Function instances share no memory, so the server is stateless: no sessions, single JSON responses, `GET` answered with `405`, and no long-lived streams.
 - **Both protocol eras.** The official TypeScript SDK (`createMcpHandler`) serves `2026-07-28` requests and falls back to stateless `2025-11-25` serving for clients that open with `initialize`.
-- **One plan builder.** Tools price plans with `buildCatalog`, the same code behind Safari eSIM's [partner catalog API](https://safariesim.com/api). It uses the same price maths as checkout.
+- **One plan builder.** Tools price plans with `buildCatalog`, the same code behind SafarieSIM's [partner catalog API](https://safariesim.com/api). It uses the same price maths as checkout.
 
 ## Data and freshness
 
-- **Source:** Safari eSIM's production catalog in Postgres. Nothing is hard-coded.
+- **Source:** SafarieSIM's production catalog in Postgres. Nothing is hard-coded.
 - **Prices:** final prices for one traveller, including the rounding customers see, identical to checkout. Catalog reads are cached for up to 60 seconds, and checkout always re-prices.
 - **Networks:** the operators recorded for each plan and country. This is not a coverage map: the server can't tell you the signal at a particular park or lodge, and its tools say so.
 - **Data estimates:** typical per-app data rates, returned with every estimate so you can see the assumptions.
@@ -146,7 +146,7 @@ The server covers every destination Safari eSIM sells, with Africa first. `list_
 ## Access and limits
 
 - **No key needed.** Each IP address gets a flood-protection budget of 120 requests per minute. AI platforms share IP addresses, so this is generous by design.
-- **Partner keys (optional).** Safari eSIM partners and affiliates can send `x-api-key: <key>`. This adds their referral code to every link and uses their key's hourly quota. An unknown or revoked key gets `401` instead of anonymous access, so a misconfigured key is easy to spot. Keys are issued by Safari eSIM. Ask at [support@safariesim.com](mailto:support@safariesim.com).
+- **Partner keys (optional).** SafarieSIM partners and affiliates can send `x-api-key: <key>`. This adds their referral code to every link and uses their key's hourly quota. An unknown or revoked key gets `401` instead of anonymous access, so a misconfigured key is easy to spot. Keys are issued by SafarieSIM. Ask at [support@safariesim.com](mailto:support@safariesim.com).
 
 | Status | JSON-RPC code | Meaning |
 |---|---|---|
@@ -165,11 +165,11 @@ Bad tool arguments, such as an unknown country or an unsupported currency, come 
 - **No secrets in this repo:** the database credential lives only in Supabase's function secrets.
 - **Small prompt-injection surface:** tool output is catalog data (names, numbers, links), not user-generated text.
 
-See Safari eSIM's [privacy policy](https://safariesim.com/privacy). To report a vulnerability, see [SECURITY.md](SECURITY.md).
+See SafarieSIM's [privacy policy](https://safariesim.com/privacy). To report a vulnerability, see [SECURITY.md](SECURITY.md).
 
 ## Development
 
-This repository mirrors the production source of the `mcp` function, which is deployed from Safari eSIM's main codebase. You can run and test the full server locally against a synthetic catalog. You need [Deno](https://deno.com) 2.x.
+This repository mirrors the production source of the `mcp` function, which is deployed from SafarieSIM's main codebase. You can run and test the full server locally against a synthetic catalog. You need [Deno](https://deno.com) 2.x.
 
 ```bash
 deno task check            # type-check the function
@@ -179,7 +179,7 @@ npx @modelcontextprotocol/inspector   # then connect Inspector to that URL (Stre
 deno task smoke            # check the production endpoint
 ```
 
-Running it against a real database needs Safari eSIM's catalog schema, which isn't public.
+Running it against a real database needs SafarieSIM's catalog schema, which isn't public.
 
 ```
 supabase/functions/
@@ -213,4 +213,4 @@ Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for
 
 - Questions, partner keys: [support@safariesim.com](mailto:support@safariesim.com)
 - Bugs and ideas: [GitHub issues](https://github.com/punivox/africa-travel-connectivity/issues)
-- Safari eSIM: [safariesim.com](https://safariesim.com)
+- SafarieSIM: [safariesim.com](https://safariesim.com)

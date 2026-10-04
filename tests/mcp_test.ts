@@ -86,6 +86,7 @@ Deno.test("2025-era clients: initialize, initialized, tools/list", async () => {
   const result = init.json.result;
   assertEquals(result.serverInfo.name, "africa-travel-connectivity");
   assertEquals(result.serverInfo.title, "Africa Travel Connectivity");
+  assert(result.serverInfo.description.includes("Africa"), "directories read the description");
   assert(result.instructions.includes("search_esim_plans"));
   assertEquals(init.headers.get("mcp-session-id"), null, "stateless: no session id");
   assertEquals((await rpc("notifications/initialized", {}, { era: "legacy", notify: true })).status, 202);
@@ -146,7 +147,7 @@ Deno.test("search_esim_plans: multi-country, filters and empty results", async (
   const split = await call("search_esim_plans", { countries: ["KE", "FR"], days: 7 });
   assert(/No single plan covers/.test(split.data.note));
   const uncovered = await call("search_esim_plans", { countries: ["ER"], days: 7 });
-  assert(/No Safari eSIM plan currently covers Eritrea/.test(uncovered.data.note));
+  assert(/No SafarieSIM plan currently covers Eritrea/.test(uncovered.data.note));
 });
 
 Deno.test("compare_country_plans", async () => {

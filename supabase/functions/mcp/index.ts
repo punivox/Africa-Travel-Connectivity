@@ -1,6 +1,6 @@
 /**
  * mcp — Africa Travel Connectivity: a public, read-only MCP server over the
- * live Safari eSIM catalog, so AI clients can find and compare travel eSIM
+ * live SafarieSIM catalog, so AI clients can find and compare travel eSIM
  * plans, networks and trip data needs.
  *
  *   https://api.safariesim.com/functions/v1/mcp      Streamable HTTP

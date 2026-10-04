@@ -2,7 +2,7 @@
  * Synthetic catalog for the tests: a few destinations that exercise every
  * pricing path (absolute day tiers, flat daily rate, formula mode, fixed
  * packages, a multi-country safari plan) plus partner keys. Prices and ids are
- * made up; they are not Safari eSIM's live catalog.
+ * made up; they are not SafarieSIM's live catalog.
  */
 import { db, writes } from "./fake_supabase.ts";
 
