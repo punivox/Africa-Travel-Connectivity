@@ -1,0 +1,10 @@
+{
+  "nodeModulesDir": "none",
+  "tasks": {
+    "check": "deno check supabase/functions/mcp/index.ts",
+    "test": "deno test --allow-env --allow-read=. --import-map=tests/import_map.json tests/",
+    "serve:fixtures": "deno run --allow-env --allow-read=. --allow-net=127.0.0.1 --import-map=tests/import_map.json tests/serve_fixtures.ts",
+    "smoke": "deno run --allow-net --allow-env scripts/smoke.mjs"
+  },
+  "lock": false
+}

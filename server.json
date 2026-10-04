@@ -1,0 +1,25 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.safariesim/africa-travel-connectivity",
+  "title": "Africa Travel Connectivity",
+  "description": "Find and compare travel eSIM plans, prices, networks and validity across Africa, with live data.",
+  "version": "1.0.0",
+  "websiteUrl": "https://safariesim.com/mcp",
+  "repository": {
+    "url": "https://github.com/punivox/africa-travel-connectivity",
+    "source": "github"
+  },
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/punivox/africa-travel-connectivity/main/assets/icon-512.png",
+      "mimeType": "image/png",
+      "sizes": ["512x512"]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api.safariesim.com/functions/v1/mcp"
+    }
+  ]
+}
