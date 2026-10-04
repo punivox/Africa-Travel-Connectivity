@@ -1,7 +1,7 @@
 {
   "identifier": "punivox-africa-travel-connectivity",
   "name": "Africa Travel Connectivity",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Find and compare travel eSIM plans, prices, networks and validity across Africa, with live data from SafarieSIM.",
   "author": "Punivox OÜ (SafarieSIM)",
   "authorUrl": "https://github.com/punivox",
