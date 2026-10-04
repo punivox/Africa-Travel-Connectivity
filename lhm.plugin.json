@@ -1,0 +1,293 @@
+{
+  "identifier": "punivox-africa-travel-connectivity",
+  "name": "Africa Travel Connectivity",
+  "version": "1.0.0",
+  "description": "Find and compare travel eSIM plans, prices, networks and validity across Africa, with live data from Safari eSIM.",
+  "author": "Punivox OÜ (Safari eSIM)",
+  "authorUrl": "https://github.com/punivox",
+  "homepage": "https://safariesim.com",
+  "cloudEndpoint": "https://api.safariesim.com/functions/v1/mcp",
+  "icon": "https://raw.githubusercontent.com/punivox/africa-travel-connectivity/main/assets/icon-512.png",
+  "tags": [
+    "esim",
+    "travel",
+    "africa",
+    "safari",
+    "mobile-data",
+    "connectivity"
+  ],
+  "tools": [
+    {
+      "name": "search_esim_plans",
+      "title": "Search eSIM plans",
+      "description": "Find travel eSIM plans that work in every country of a trip, cheapest first. Use it for questions like \"best eSIM for a 10-day Kenya safari\" or \"one eSIM for Kenya, Tanzania and Uganda under $40\". Each plan includes its data allowance (or unlimited with its daily full-speed cap), validity, price in the requested currency, the operators it uses in those countries, and a checkout_url. Prices are live and match Safari eSIM checkout. If no single plan covers every country, use compare_country_plans.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "countries": {
+            "minItems": 1,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 60
+            },
+            "description": "Countries on the trip, as ISO 3166-1 alpha-2 codes (KE, TZ) or English names (Kenya, Tanzania, Zanzibar)."
+          },
+          "days": {
+            "description": "Trip length in days. Calendar plans are priced for exactly this many days; fixed packages must last at least this long. Omit to list the standard durations.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 365
+          },
+          "min_data_gb": {
+            "description": "Minimum total data for the trip in GB (calculate_safari_data can estimate it). Unlimited plans always qualify.",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000
+          },
+          "unlimited_only": {
+            "description": "Only return unlimited-data plans.",
+            "type": "boolean"
+          },
+          "max_price": {
+            "description": "Maximum total price, in the requested currency.",
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "currency": {
+            "description": "ISO 4217 code for prices, e.g. USD, EUR, GBP, KES. Defaults to USD. An unsupported code returns the supported list.",
+            "type": "string",
+            "pattern": "^[A-Za-z]{3}$"
+          },
+          "limit": {
+            "description": "Maximum number of plans to return. Defaults to 10.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 25
+          }
+        },
+        "required": [
+          "countries"
+        ]
+      },
+      "annotations": {
+        "title": "Search eSIM plans",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "compare_country_plans",
+      "title": "Compare plans by country",
+      "description": "Compare eSIM options country by country for a trip: the cheapest plan and the cheapest unlimited plan in each country, the operators used there, and the cheapest single plans that cover every country (useful for multi-country safaris such as Kenya, Tanzania and Uganda). Use it for \"compare Kenya and Tanzania\" or when search_esim_plans finds no plan covering all countries. Prices are for the whole trip length.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "countries": {
+            "minItems": 1,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 60
+            },
+            "description": "Countries on the trip, as ISO 3166-1 alpha-2 codes (KE, TZ) or English names (Kenya, Tanzania, Zanzibar)."
+          },
+          "days": {
+            "description": "Trip length in days. Defaults to 7.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 365
+          },
+          "currency": {
+            "description": "ISO 4217 code for prices, e.g. USD, EUR, GBP, KES. Defaults to USD. An unsupported code returns the supported list.",
+            "type": "string",
+            "pattern": "^[A-Za-z]{3}$"
+          }
+        },
+        "required": [
+          "countries"
+        ]
+      },
+      "annotations": {
+        "title": "Compare plans by country",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "get_country_networks",
+      "title": "Get mobile networks for a country",
+      "description": "List the mobile operators and network types (5G, 4G, 3G) that Safari eSIM plans use in a country, and which plans use each operator. Use it for \"which network does the Tanzania eSIM use?\" or \"is there 5G in Kenya?\". It does not know signal strength at specific parks, lodges or roads.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "country": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 60,
+            "description": "ISO 3166-1 alpha-2 code or English name, e.g. TZ or Tanzania."
+          }
+        },
+        "required": [
+          "country"
+        ]
+      },
+      "annotations": {
+        "title": "Get mobile networks for a country",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "calculate_safari_data",
+      "title": "Estimate trip data needs",
+      "description": "Estimate how much mobile data a trip needs from its length and typical activities (messaging, maps, social media, photo uploads, video calls, streaming), including devices sharing a hotspot. Returns daily and total figures with the rates used, a recommendation between unlimited and fixed-data plans, and — when countries are given — the cheapest live plans that fit. Use it for \"how much data do I need for a 10-day safari?\".",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "days": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 365,
+            "description": "Trip length in days."
+          },
+          "profile": {
+            "description": "light: messaging and maps. moderate (default): plus social media, photo uploads and short video calls. heavy: plus long video calls and streaming.",
+            "type": "string",
+            "enum": [
+              "light",
+              "moderate",
+              "heavy"
+            ]
+          },
+          "daily_usage": {
+            "description": "Per-day amounts that override the profile's defaults.",
+            "type": "object",
+            "properties": {
+              "messaging_minutes": {
+                "description": "Messaging per day, in minutes.",
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1440
+              },
+              "maps_minutes": {
+                "description": "Maps and navigation per day, in minutes.",
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1440
+              },
+              "web_minutes": {
+                "description": "Web browsing per day, in minutes.",
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1440
+              },
+              "social_media_minutes": {
+                "description": "Social media per day, in minutes.",
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1440
+              },
+              "video_call_minutes": {
+                "description": "Video calls per day, in minutes.",
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1440
+              },
+              "streaming_minutes": {
+                "description": "Video streaming per day, in minutes.",
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1440
+              },
+              "photos_uploaded": {
+                "description": "Photos uploaded per day.",
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2000
+              }
+            }
+          },
+          "devices": {
+            "description": "Devices sharing the data through a hotspot. Defaults to 1.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10
+          },
+          "countries": {
+            "description": "If given, also returns the cheapest plans covering these countries that fit the estimate.",
+            "minItems": 1,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 60
+            }
+          },
+          "currency": {
+            "description": "ISO 4217 code for prices, e.g. USD, EUR, GBP, KES. Defaults to USD. An unsupported code returns the supported list.",
+            "type": "string",
+            "pattern": "^[A-Za-z]{3}$"
+          }
+        },
+        "required": [
+          "days"
+        ]
+      },
+      "annotations": {
+        "title": "Estimate trip data needs",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "list_destinations",
+      "title": "List destinations",
+      "description": "List the destinations Safari eSIM covers — African countries and multi-country plans by default — with their type (single or multi-country), the plan types offered and the product page. Use it for \"which African countries do you cover?\" or to find which plans include a country (query: \"TZ\").",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "region": {
+            "description": "africa (default): African countries and multi-country plans that are mostly African. all: every destination.",
+            "type": "string",
+            "enum": [
+              "africa",
+              "all"
+            ]
+          },
+          "query": {
+            "description": "Filter by name, ISO code or covered country, e.g. \"tanzania\", \"TZ\", \"safari\".",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60
+          }
+        }
+      },
+      "annotations": {
+        "title": "List destinations",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ]
+}
